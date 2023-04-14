@@ -1,9 +1,10 @@
-import matplotlib.pyplot as plt
-import parser_01
-
-yandex = parser_01.RateParser('https://yandex.ru/news/quotes/1.html')
-usd_table_dict = yandex.site_processing('div', 'news-stock-table__cell')
-dates = [i for i in reversed(usd_table_dict)]
-value_usd = [usd_table_dict[i] for i in dates]
-plt.plot(dates, value_usd)
-plt.show()
+from matplotlib import pyplot as plt   
+from matplotlib import pyplot as plt  
+ 
+percentage = parser_01.RateParser('https://yandex.ru/news/quotes/1.html') 
+Ruble = [0,10,20,30,40,50,60,70,80,90,100]   
+plt.hist(USD, Ruble, histtype='bar', rwidth=0.8)   
+plt.xlabel('USD')   
+plt.ylabel('Ruble')   
+plt.title('USD & Ruble')   
+plt.show() 

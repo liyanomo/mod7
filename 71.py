@@ -1,21 +1,21 @@
-import bs4
-import requests
+import requests 
+from bs4 import BeautifulSoup 
 
-class RateParser:
+class Currency:
 
-    def __init__(self, link_site):
-        self.__link = link_site
-        self.usd_rate_table_dict = {}
+    DOLLAR_RUB = 'http://mfd.ru/currency/?currency=USD'
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'}
 
-    def site_processing(self, tag, attribute_class):
-        response = requests.get(self.__link)
-        soup = bs4.BeautifulSoup(response.text, 'lxml')
-        dollar_full_table = soup.find_all(tag, {'class': attribute_class})
-        dollar_rate_table = [usd.text for usd in dollar_full_table]
-        for data in range(3, len(dollar_rate_table), 3):
-            self.usd_rate_table_dict[dollar_rate_table[data]] = dollar_rate_table[data + 1]
-        for i in self.usd_rate_table_dict:
-            self.usd_rate_table_dict[i] = float(self.usd_rate_table_dict[i].replace(',', '.'))
-        return self.usd_rate_table_dict
+
+
+    def __init__(self):
+        self.current_converted_price = float(self.get_currency_price().replace(",", "."))
+
+    def get_currency_price(self):
+        full_page = requests.get(self.DOLLAR_RUB, headers=self.headers)
+
+        soup = BeautifulSoup(full_page.content, 'html.parser')
+        convert = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2})
+        return convert[0].text
 
 
