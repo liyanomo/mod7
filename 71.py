@@ -11,11 +11,11 @@ class Currency:
     def __init__(self):
         self.current_converted_price = float(self.get_currency_price().replace(",", "."))
 
-    def get_currency_price(self):
+    def get_currency_price1(self):
         full_page = requests.get(self.DOLLAR_RUB, headers=self.headers)
 
         soup = BeautifulSoup(full_page.content, 'html.parser')
-        convert = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2})
-        return convert[0].text
+        return soup
+    print (get_currency_price1)
 
 
