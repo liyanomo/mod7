@@ -4,23 +4,25 @@ from bs4 import BeautifulSoup
 
 class Currency:
 
-    link = 'http://mfd.ru/currency/?currency=USD'
+    link = 'https://www.google.com/search?sxsrf=ALeKk01NWm6viYijAo3HXYOEQUyDEDtFEw%3A1584716087546&source=hp&ei=N9l0XtDXHs716QTcuaXoAg&q=%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&oq=%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80+&gs_l=psy-ab.3.0.35i39i70i258j0i131l4j0j0i131l4.3044.4178..5294...1.0..0.83.544.7......0....1..gws-wiz.......35i39.5QL6Ev1Kfk4'
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'}
-    current_converted_price = {} 
+    current_converted_price = 0
+
+    def __init__(self):
+        self.current_converted_price = float(self.get_currency_price1().replace(",", "."))
 
     def get_currency_price1(self):
 
         full_page = requests.get(self.link, headers=self.headers)
 
         soup = BeautifulSoup(full_page.text, 'html.parser') 
-        dollar = soup.findAll('table', {'class': 'mfd-table mfd-currency-table'}) 
-        dollar_now = [usd.text for usd in dollar]
-
-        for data in range(5, len(dollar_now), 5):
-            current_converted_price[dollar_now[data]] = dollar_now[data + 1]
-        for i in current_converted_price:
-            current_converted_price[i] = float(current_converted_price.replace(',', '.'))
-        return current_converted_price
+        dollar = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2}) 
+    
+        return dollar[0].text
+    def check_currency(self):
+        currency = float(self.get_currency_price1().replace(",", "."))
+    
+        return currency 
 c = Currency()
 print(c.get_currency_price1())
 
