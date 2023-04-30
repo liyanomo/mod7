@@ -4,42 +4,50 @@ from bs4 import BeautifulSoup
 from matplotlib import pyplot as plt   
 from matplotlib import style
 import numpy as np
-class Currency:
+import datetime
+import pandas as pd
 
-    link = 'https://www.google.com/search?sxsrf=ALeKk01NWm6viYijAo3HXYOEQUyDEDtFEw%3A1584716087546&source=hp&ei=N9l0XtDXHs716QTcuaXoAg&q=%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80+%D0%BA+%D1%80%D1%83%D0%B1%D0%BB%D1%8E&oq=%D0%B4%D0%BE%D0%BB%D0%BB%D0%B0%D1%80+&gs_l=psy-ab.3.0.35i39i70i258j0i131l4j0j0i131l4.3044.4178..5294...1.0..0.83.544.7......0....1..gws-wiz.......35i39.5QL6Ev1Kfk4'
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36'}
-    current_converted_price = 0
-    currency_list = []
 
-    def __init__(self):
-        self.current_converted_price = float(self.get_currency_price1().replace(",", "."))
+page = requests.get('http://mfd.ru/currency/?currency=USD')
+soup = BeautifulSoup(page.text, 'html.parser')
+table = soup.find('table',{'class':'mfd-table mfd-currency-table'})
 
-    def get_currency_price1(self):
+rows = table.find_all('td')
+rows = [i.text for i in rows]
 
-        full_page = requests.get(self.link, headers=self.headers)
+date = rows[::3]
+dollar = rows[1::3]
 
-        soup = BeautifulSoup(full_page.text, 'html.parser') 
-        dollar = soup.findAll("span", {"class": "DFlfde", "class": "SwHCTb", "data-precision": 2}) 
-    
-        return dollar[0].text
-    def check_currency(self):
-        currency = float(self.get_currency_price1().replace(",", "."))
-        return currency 
+del date[6:]
+del dollar [6:]
 
-    def graph(currency):
 
-        x = [1,currency,100]
-        y = [1, 2, 3] 
-        plt.plot(x, y)
-        plt.title("currency")
-        plt.ylabel('ruble')
-        plt.xlabel('dollar')
+
+df = pd.DataFrame({'date ': np.array([datetime. datetime (2023, 4, i+1)
+for i in range(12)]),
+ 'dollar' : [dollar] })
+
+
+plt.plot (df.date , df.dollar , linewidth= 3 )
+plt.title('currency')
+plt.xlabel('date')
+plt.ylabel('dollar')
+
+
+#ata = pd.DataFrame({'date ': np.array([datetime. datetime (2020, 1, i+1)
+ #for i in range(12)]),
+#dollar = np.array(dollar)
+
+#plt.hist(data, dollar, histtype='bar', rwidth=0.8)   
+#plt.title("currency")
+#plt.ylabel('data')
+#plt.xlabel('dollar')
  
-        plt.show()
+plt.show()
 
-c = Currency()
-print(c.get_currency_price1())
-print (c.graph())
+print(date)
+
+
 
 
         
