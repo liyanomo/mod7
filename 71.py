@@ -17,35 +17,26 @@ rows = [i.text for i in rows]
 
 date = rows[::3]
 dollar = rows[1::3]
-
-del date[6:]
-del dollar [6:]
-
-
-
-df = pd.DataFrame({'date ': np.array([datetime. datetime (2023, 4, i+1)
-for i in range(12)]),
- 'dollar' : [dollar] })
+dollar_n = dollar.copy()
+del dollar_n [1:]
+dollar_now = ''
+for i in dollar_n:
+    dollar_now += str(i)
 
 
-plt.plot (df.date , df.dollar , linewidth= 3 )
-plt.title('currency')
-plt.xlabel('date')
-plt.ylabel('dollar')
+dollar1 = []
+for i in dollar:
+    float_i = float(i)
+    dollar1.append(float_i)
+     
 
 
-#ata = pd.DataFrame({'date ': np.array([datetime. datetime (2020, 1, i+1)
- #for i in range(12)]),
-#dollar = np.array(dollar)
-
-#plt.hist(data, dollar, histtype='bar', rwidth=0.8)   
-#plt.title("currency")
-#plt.ylabel('data')
-#plt.xlabel('dollar')
- 
+x = np.array(dollar1)
+y = np.array([i for i in range(len(date))])
+plt.plot(y, x)
 plt.show()
 
-print(date)
+print('доллар сейчас:', dollar_now)
 
 
 
